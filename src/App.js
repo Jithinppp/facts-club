@@ -4,40 +4,47 @@ import Header from "./components/Header/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { useEffect, useState } from "react";
 import FactForm from "./components/FactForm/FactForm";
+import { supabase } from "./utils/supabase.utils";
+import Spinner from "./components/Spinner/Spinner";
 
 function App() {
   const [formActive, setFormActive] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [facts, setFacts] = useState([]);
+  const [error, setError] = useState(false);
+  const [filterText, setFilterText] = useState("all");
+
   const activeForm = () => {
     setFormActive((prev) => !prev);
   };
+
   useEffect(() => {
     const fetchFacts = async () => {
-      const res = await fetch(
-        "https://iqfzidutygopxleytiap.supabase.co/rest/v1/facts",
-        {
-          headers: {
-            apikey:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxZnppZHV0eWdvcHhsZXl0aWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzU0MjA0NDcsImV4cCI6MTk5MDk5NjQ0N30.w303xua4c5GBEg88GpkykGzqKhY_K6QTxHO2fDqRv_I",
-            authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxZnppZHV0eWdvcHhsZXl0aWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzU0MjA0NDcsImV4cCI6MTk5MDk5NjQ0N30.w303xua4c5GBEg88GpkykGzqKhY_K6QTxHO2fDqRv_I",
-          },
-        }
-      );
-      const data = await res.json();
+      setLoading(true);
+      let query = supabase.from("facts").select("*");
+
+      if (filterText !== "all") query = query.eq("category", filterText);
+
+      let { data, error } = await query.order("created_at", {
+        ascending: false,
+      });
+      if (error) setError(error);
       setFacts(data);
-      console.log(data);
+      setLoading(false);
     };
     fetchFacts();
-  }, []);
+  }, [filterText]);
 
   return (
     <div className="container">
-      <Header activeForm={activeForm} />
-      {formActive && <FactForm />}
+      <Header activeForm={activeForm} formActive={formActive} />
+      {formActive && (
+        <FactForm setFormActive={setFormActive} setFacts={setFacts} />
+      )}
       <main className="main__container">
-        <Sidebar />
-        <FactList facts={facts} />
+        <Sidebar setFilterText={setFilterText} />
+        {loading ? <Spinner /> : <FactList facts={facts} setFacts={setFacts} />}
+        <p>{error}</p>
       </main>
     </div>
   );

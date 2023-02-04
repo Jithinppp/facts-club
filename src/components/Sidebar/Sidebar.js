@@ -1,26 +1,26 @@
-const Sidebar = () => {
+import CATEGORIES from "../../CATEGORIES";
+import SidebarButton from "../SidebarButton/SidebarButton";
+
+const Sidebar = ({ setFilterText }) => {
   return (
     <aside className="sidebar__container">
       <ul className="sidebar">
         <li>
-          <button className="cta__button btn__all">All</button>
-        </li>
-        <li>
           <button
-            className="cta__button btn_secondary"
-            style={{ backgroundColor: "#16a34a" }}
+            className="cta__button btn__all"
+            onClick={() => setFilterText("all")}
           >
-            Technology
+            All
           </button>
         </li>
-        <li>
-          <button
-            className="cta__button btn_secondary"
-            style={{ backgroundColor: "#3b82f6" }}
-          >
-            Science
-          </button>
-        </li>
+        {CATEGORIES.map((category, idx) => (
+          <SidebarButton
+            setFilterText={setFilterText}
+            category={category.name}
+            color={category.color}
+            key={idx}
+          />
+        ))}
       </ul>
     </aside>
   );

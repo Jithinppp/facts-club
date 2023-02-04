@@ -1,4 +1,4 @@
-const Header = ({ activeForm }) => {
+const Header = ({ activeForm, formActive }) => {
   return (
     <header className="navigation">
       <div className="logo__container">
@@ -10,10 +10,9 @@ const Header = ({ activeForm }) => {
         id="share_fact_btn"
         onClick={() => {
           activeForm();
-          console.log("button pressed");
         }}
       >
-        Share a fact
+        {formActive ? "Close" : "Share a fact"}
       </button>
     </header>
   );

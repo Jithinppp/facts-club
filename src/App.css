@@ -60,7 +60,7 @@ ul {
   font-size: 1rem;
   font-weight: 700;
   text-transform: capitalize;
-  padding: 5px 10px;
+  padding: 0 10px;
   border-radius: 10px;
 }
 
@@ -171,6 +171,10 @@ ul {
 }
 .limit_text {
   margin: 0 10px;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 @media screen and (max-width: 400px) {
