@@ -120,7 +120,7 @@ ul {
   margin: 0 5px;
 }
 .cta__button:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .btn_secondary {
@@ -183,5 +183,14 @@ button:disabled {
   }
   .cta__button {
     font-size: 1rem;
+  }
+  .fact {
+    font-size: 1rem;
+  }
+  .tag {
+    font-size: 0.9rem;
+  }
+  button {
+    transform: scale(0.95);
   }
 }
