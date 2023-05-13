@@ -5,7 +5,7 @@ const FactList = ({ facts, setFacts }) => {
   return (
     <section className="facts__container">
       <ul className="fact_list_container">
-        {facts.length === 0 ? (
+        {facts?.length === 0 ? (
           <li>No facts yet</li>
         ) : (
           facts.map((fact) => {
